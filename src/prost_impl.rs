@@ -14,7 +14,16 @@ impl Builder {
             )
             .unwrap();
         }
-        #[cfg(not(feature = "grpcio-prost-codec"))]
+        
+        #[cfg(feature = "tonic-prost-codec")]
+        {
+            tonic_build::configure()
+                .generate_default_stubs(true)
+                .compile(&self.files, &self.includes)
+                .unwrap();
+        }
+
+        #[cfg(not(any(feature = "grpcio-prost-codec", feature = "tonic-prost-codec")))]
         {
             prost_build::Config::new()
                 .out_dir(&self.out_dir)
