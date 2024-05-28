@@ -14,11 +14,12 @@ impl Builder {
             )
             .unwrap();
         }
-        
+
         #[cfg(feature = "tonic-prost-codec")]
         {
             tonic_build::configure()
                 .generate_default_stubs(true)
+                .out_dir(&self.out_dir)
                 .compile(&self.files, &self.includes)
                 .unwrap();
         }
